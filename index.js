@@ -1,6 +1,5 @@
 const createKeccakHash = require('keccak')
 const secp256k1 = require('secp256k1')
-const assert = require('assert')
 const rlp = require('rlp')
 const BN = require('bn.js')
 const createHash = require('create-hash')
@@ -312,7 +311,6 @@ exports.pubToAddress = exports.publicToAddress = function (pubKey, sanitize) {
   if (sanitize && (pubKey.length !== 64)) {
     pubKey = secp256k1.publicKeyConvert(pubKey, false).slice(1)
   }
-  assert(pubKey.length === 64)
   // Only take the lower 160bits of the hash
   return exports.keccak(pubKey).slice(-20)
 }
@@ -531,9 +529,6 @@ exports.generateAddress2 = function (from, salt, initCode) {
   from = exports.toBuffer(from)
   salt = exports.toBuffer(salt)
   initCode = exports.toBuffer(initCode)
-
-  assert(from.length === 20)
-  assert(salt.length === 32)
 
   let address = exports.keccak256(Buffer.concat([
     Buffer.from('ff', 'hex'),
